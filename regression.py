@@ -23,16 +23,16 @@ df = df[['Adj. Close', 'HL_PCT', 'PCT_change', 'Adj. Volume']]
 forcast_col = 'Adj. Close'
 df.fillna(-9999, inplace=True)
 
-forcast_out = int(math.ceil(0.01 * len(df)))
+forcast_out = int(math.ceil(0.1 * len(df)))
 #print(forcast_out)
 
 df['label'] = df[forcast_col].shift(-forcast_out)
 
 
-X = np.array(df.drop(['label'], 1))
+X = np.array(df.drop(['label', 'Adj. Close'], 1))
 X = preprocessing.scale(X)
-X = X[:-forcast_out]
 X_lately = X[-forcast_out:]
+X = X[:-forcast_out]
 
 df.dropna(inplace=True)
 y = np.array(df['label'])
